@@ -1,0 +1,147 @@
+from classes import EBook, EBookStore, SpecialEditionEBook, Customer, ShoppingCart, Order, Invoice, Payment
+
+def test_ebook_store():
+    print("Testing EBookStore functionality...")
+
+    # Creating an e-book store instance
+    store = EBookStore("My E-Book Store")
+
+    # Creating e-book instances
+    ebook1 = EBook("Python Programming", "John Doe", "2024-01-01", "Programming", 29.99)
+    ebook2 = EBook("Data Science Basics", "Jane Doe", "2023-06-15", "Data Science", 39.99)
+
+    # Adding e-books to store
+    store.add_ebook(ebook1)
+    store.add_ebook(ebook2)
+
+    # Checking if the e-books were added
+    print(f"Store's e-books list: {store.get_eBooks_list()}")
+
+    # Removing an e-book by title
+    store.remove_ebook("Python Programming")
+    print(f"Store's e-books list after removal: {store.get_eBooks_list()}")
+
+    # Creating a customer and registering them
+    customer1 = Customer("Alice", "alice@example.com", True)
+    store.register_customer(customer1)
+    print(f"Store's customer list: {store.get_customers_list()}")
+
+
+def test_customer_management():
+    print("\nTesting Customer Management...")
+
+    # Creating customers
+    customer1 = Customer("Alice", "alice@example.com", True)
+    customer2 = Customer("Bob", "bob@example.com", False)
+
+    # Print initial customer details
+    print(f"Customer 1: {customer1}")
+    print(f"Customer 2: {customer2}")
+
+    # Updating customer details
+    customer1.set_name("Alice Wonderland")
+    print(f"Updated Customer 1: {customer1}")
+
+
+def test_shopping_cart():
+    print("\nTesting ShoppingCart functionality...")
+
+    # Creating an e-book store instance and customers
+    store = EBookStore("My E-Book Store")
+    customer1 = Customer("Alice", "alice@example.com", True)
+
+    # Adding e-books to the store
+    ebook1 = EBook("Python Programming", "John Doe", "2024-01-01", "Programming", 29.99)
+    ebook2 = EBook("Data Science Basics", "Jane Doe", "2023-06-15", "Data Science", 39.99)
+    store.add_ebook(ebook1)
+    store.add_ebook(ebook2)
+
+    # Creating a shopping cart and adding e-books to it
+    shopping_cart = ShoppingCart()
+    shopping_cart.add_item(ebook1)
+    shopping_cart.add_item(ebook2)
+
+    # Displaying shopping cart items
+    print(f"Shopping cart items: {shopping_cart.get_items_list()}")
+
+    # Removing an item from the cart
+    shopping_cart.remove_item("Python Programming")
+    print(f"Shopping cart after removal: {shopping_cart.get_items_list()}")
+
+    # Clearing the cart
+    shopping_cart.clear_cart()
+    print(f"Shopping cart after clearing: {shopping_cart.get_items_list()}")
+
+
+def test_order_processing():
+    print("\nTesting Order Processing...")
+
+    # Creating an e-book store instance and a customer
+    store = EBookStore("My E-Book Store")
+    customer1 = Customer("Alice", "alice@example.com", True)
+
+    # Adding e-books to the store
+    ebook1 = EBook("Python Programming", "John Doe", "2024-01-01", "Programming", 29.99)
+    ebook2 = EBook("Data Science Basics", "Jane Doe", "2023-06-15", "Data Science", 39.99)
+    store.add_ebook(ebook1)
+    store.add_ebook(ebook2)
+
+    # Creating a shopping cart and adding e-books to it
+    shopping_cart = ShoppingCart()
+    shopping_cart.add_item(ebook1)
+    shopping_cart.add_item(ebook2)
+
+    # Creating an order
+    order1 = Order("ORD123", "2024-11-07", customer1, shopping_cart)
+
+    # Calculating final price (without discount)
+    print(f"Initial final price: {order1.calculate_final_price()}")
+
+    # Applying a bulk discount (if more than 5 items in cart)
+    order1.apply_bulk_discount()
+
+    # Checking final price after discount
+    print(f"Final price after discount: {order1.calculate_final_price()}")
+
+    # Generating invoice for the order
+    invoice = Invoice(101, shopping_cart._itemsList, 69.98, 5.0, 6.99, order1.calculate_final_price())
+    order1.set_invoice(invoice)
+
+    # Displaying the invoice
+    print("Invoice details:")
+    order1.get_invoice().display_invoice()
+
+
+def test_payment():
+    print("\nTesting Payment Processing...")
+
+    # Creating a payment instance
+    payment = Payment("Credit Card", 69.98)
+
+    # Processing payment (should return True if payment is successful)
+    payment_status = payment.process_payment(69.98)
+    print(f"Payment processed: {payment_status}")
+
+    # Refund functionality
+    refund_status = payment.refund()
+    print(f"Refund processed: {refund_status}")
+
+
+def test_special_edition_ebook():
+    print("\nTesting Special Edition E-Book...")
+
+    # Creating a special edition e-book instance
+    special_ebook = SpecialEditionEBook("Advanced Python", "John Smith", "2024-03-01", "Programming", 49.99, "Includes exclusive chapter", True)
+
+    # Checking if special features are set correctly
+    print(f"Special Edition EBook details: {special_ebook}")
+
+
+if __name__ == "__main__":
+    # Run all tests
+    test_ebook_store()
+    test_customer_management()
+    test_shopping_cart()
+    test_order_processing()
+    test_payment()
+    test_special_edition_ebook()
